@@ -16,8 +16,8 @@ namespace Assignment3.Entities.Tests
 
         public DatabaseFixture()
         {
-            var factory = new KanbanContextFactory();
-            Context = factory.CreateDbContext(null);
+            var factory = new KanbanTestContextFactory();
+            Context = factory.CreateDbContext();
             TaskRepository = new TaskRepository(Context);
         }
         public void Dispose()

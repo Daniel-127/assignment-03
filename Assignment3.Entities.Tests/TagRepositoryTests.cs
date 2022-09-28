@@ -11,9 +11,9 @@ public class TagRepositoryTests
   TaskRepository taskRepository;
 
   public TagRepositoryTests() {
-    context = (new KanbanContextFactory()).CreateDbContext(null);
-    tagRepository = new TagRepository(context);
+    context = (new KanbanTestContextFactory()).CreateDbContext();
     taskRepository = new TaskRepository(context);
+    repository = new TagRepository(context);
   }
 
   [Fact]

@@ -14,7 +14,6 @@ public class TagRepository : ITagRepository
   public (Response Response, int TagId) Create(TagCreateDTO tag)
   {
     if(_context.Tags.Where(t => t.Name == tag.Name).FirstOrDefault() != null) {
-        Console.WriteLine("LAUGE");
         return (Response.Conflict, -1); 
     }
     var t = new Tag(tag.Name);
