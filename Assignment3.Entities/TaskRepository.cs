@@ -13,7 +13,8 @@ public class TaskRepository : ITaskRepository
 
     public (Response Response, int TaskId) Create(TaskCreateDTO task)
     {
-        var tags = context.Tags.Join(task.Tags, tag => tag.Name, name => name, (tag, name) => tag).ToList();
+        var tagsDB = context.Tags.ToList();
+        var tags = tagsDB.Where(tag => task.Tags.Contains(tag.Name)).ToList();
         var dbTask = new Task(task.Title, task.AssignedToId, task.Description, tags);
         context.Tasks.Add(dbTask);
         context.SaveChanges();

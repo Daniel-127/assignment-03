@@ -8,7 +8,7 @@ public class Tag
     }
 
     public int Id { get; set; }
-    [Required, StringLength(50)]
+    [StringLength(50), Required]
     public string Name { get; set; }
     public List<Task>? Tasks { get; set; }
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Assignment3.Entities.Migrations
 {
     [DbContext(typeof(KanbanContext))]
-    [Migration("20220927115927_ModifiedTask")]
-    partial class ModifiedTask
+    [Migration("20220927221948_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
