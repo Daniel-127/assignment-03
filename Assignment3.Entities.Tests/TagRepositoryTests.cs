@@ -13,7 +13,7 @@ public class TagRepositoryTests
   public TagRepositoryTests() {
     context = (new KanbanTestContextFactory()).CreateDbContext();
     taskRepository = new TaskRepository(context);
-    repository = new TagRepository(context);
+    tagRepository = new TagRepository(context);
   }
 
   [Fact]
