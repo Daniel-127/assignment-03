@@ -10,7 +10,7 @@ public class TagRepositoryTests
   KanbanContext context;
 
   public TagRepositoryTests() {
-    context = (new KanbanContextFactory()).CreateDbContext(null);
+    context = (new KanbanTestContextFactory()).CreateDbContext();
     repository = new TagRepository(context);
   }
 

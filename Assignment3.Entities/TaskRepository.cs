@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Assignment3.Entities;
 
@@ -14,7 +15,8 @@ public class TaskRepository : ITaskRepository
     public (Response Response, int TaskId) Create(TaskCreateDTO task)
     {
         var tagsDB = context.Tags.ToList();
-        var tags = tagsDB.Where(tag => task.Tags.Contains(tag.Name)).ToList();
+        var tags = task.Tags != null ? tagsDB.Where(tag => task.Tags.Contains(tag.Name)).ToList() : null;
+        if (invalidUserId(task.AssignedToId)) return (Response.BadRequest, -1);
         var dbTask = new Task(task.Title, task.AssignedToId, task.Description, tags);
         context.Tasks.Add(dbTask);
         context.SaveChanges();
@@ -84,9 +86,11 @@ public class TaskRepository : ITaskRepository
         if (dbTask == null) return Response.NotFound;
         dbTask.Title = task.Title;
         dbTask.Description = task.Description;
-        dbTask.Tags = context.Tags.Join(task.Tags, tag => tag.Name, name => name, (tag, name) => tag).ToList();
+        var tagsDB = context.Tags.ToList();
+        dbTask.Tags = task.Tags != null ? tagsDB.Where(tag => task.Tags.Contains(tag.Name)).ToList() : null;
         if (dbTask.UserId != task.AssignedToId)
         {
+            if (invalidUserId(task.AssignedToId)) return Response.BadRequest;
             dbTask.UserId = task.AssignedToId;
             dbTask.User = null;
         }
@@ -102,5 +106,10 @@ public class TaskRepository : ITaskRepository
     private List<string> TagNames(Task task)
     {
         return task.Tags.Select(tag => tag.Name).ToList();
+    }
+
+    private bool invalidUserId(int? userId)
+    {
+        return userId != null && userId > -1 & context.Users.Find(userId) == null;
     }
 }
