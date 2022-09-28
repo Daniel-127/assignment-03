@@ -25,31 +25,51 @@ public class TagRepository : ITagRepository
 
   public Response Delete(int tagId, bool force = false)
   {
-    throw new NotImplementedException();
+    var tagToBeDeleted = _context.Tags.Find(tagId);
+    if(tagToBeDeleted != null){
+      if(tagToBeDeleted.Tasks.Count == 0 || force){
+        _context.Tags.Remove(tagToBeDeleted);
+        return Response.Deleted;
+      } else {
+        return Response.Conflict;
+      }
+    } else {
+      return Response.NotFound;
+    }
   }
 
   public TagDTO Find(int tagId)
   {
-    throw new NotImplementedException();
+    var tag = _context.Tags.Find(tagId);
+    if(tag != null){
+      return new TagDTO(tag.Id, tag.Name);
+    }
+    return null;
   }
 
   public IReadOnlyCollection<TagDTO> Read()
   {
-    throw new NotImplementedException();
+    return _context.Tags.Select(tag => new TagDTO(tag.Id, tag.Name)).ToList();
   }
 
-    public TagDTO Read(int tagId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IReadOnlyCollection<TagDTO> ReadAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Response Update(TagUpdateDTO tag)
+  public TagDTO Read(int tagId)
   {
-    throw new NotImplementedException();
+    return Find(tagId);
+  }
+
+  public IReadOnlyCollection<TagDTO> ReadAll()
+  {
+      return Read();
+  }
+
+  public Response Update(TagUpdateDTO tag)
+  {
+      var _tag = _context.Tags.Find(tag.Id);
+      if(_tag != null){
+        _tag.Name = tag.Name;
+        _context.Tags.Update(_tag);
+        return Response.Updated;
+      }
+      return Response.NotFound;
   }
 }
