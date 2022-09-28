@@ -12,7 +12,7 @@ public class Task
         State = State.New;
     }
 
-    public Task(string title, int? userId, string? description, ICollection<Tag> tags)
+    public Task(string title, int? userId, string? description, ICollection<Tag>? tags)
     {
         Title = title;
         UserId = userId;
